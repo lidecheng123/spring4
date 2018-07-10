@@ -2,12 +2,33 @@ package com.cplh.test.data;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Size;
+
+@Entity
 public class Spittle {
+	
+	@Size(min=2,max=5)
 	private String name;
+	
+	@Id	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private Long id;
+	
+	@Column
 	private Date time;
+	
+	@Column
 	private String message;
+	
+	@Column
 	private Double x;
+	
+	@Column
 	private Double y;
 	
 	public Spittle() {

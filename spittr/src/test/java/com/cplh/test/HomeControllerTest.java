@@ -2,8 +2,10 @@ package com.cplh.test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import java.util.ArrayList;
@@ -12,8 +14,8 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.cplh.test.controller.HomeController;
 import com.cplh.test.controller.SpittlerController;
+import com.cplh.test.data.JpaSpitterRepository;
 import com.cplh.test.data.Spittle;
 import com.cplh.test.data.SpittleRepository;
 
@@ -24,7 +26,7 @@ public class HomeControllerTest {
 	@Test
 	public void homeControllerTest() throws Exception {
 		List<Spittle> exceptedSpittle=createSpittleList(20);
-		SpittleRepository mockRepository=mock(SpittleRepository.class);
+		JpaSpitterRepository mockRepository=mock(JpaSpitterRepository.class);
 		when(mockRepository.findList(Long.MAX_VALUE, 20)).thenReturn(exceptedSpittle);
 		
 		SpittlerController spittlerController=new SpittlerController(mockRepository);
@@ -36,7 +38,7 @@ public class HomeControllerTest {
 	
 	@Test
 	public void spittleControllerTest() throws Exception{
-		SpittleRepository respository=mock(SpittleRepository.class);
+		JpaSpitterRepository respository=mock(JpaSpitterRepository.class);
 		SpittlerController spittleController=new SpittlerController(respository);
 		MockMvc mockMvc=standaloneSetup(spittleController).build();
 		mockMvc.perform(post("/spittles/save").param("id", "1").param("name", "test"))

@@ -1,0 +1,22 @@
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:include="header::headerfragement">
+</head>
+<body>
+	<!-- 自己的内容 -->
+	<h3>当前的spittles结果 <small>我是副标题1 h1</small></h3>
+	
+	<div class="wrapper">
+		<nav th:include="menu::menufragment">
+		</nav>
+		<div  class="row align-items-center">
+			<ul class="list-group">
+				<li th:each="spittler,iterStatus : ${spittleList}" th:class="${iterStatus.first}?'list-group-item active':'list-group-item'"><span class=""
+					th:text="${spittler.message}">Spittle message</span></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

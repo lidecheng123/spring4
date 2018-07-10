@@ -1,23 +1,43 @@
 package com.cplh.test.data;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 public class JdbcSpittleRepository implements SpittleRepository {
 
+	private JdbcOperations jdbcOperations;
+	
 	public JdbcSpittleRepository() {
+	}
+	
+	@Inject
+	public JdbcSpittleRepository(JdbcOperations jdbcOperations) {
+		this.jdbcOperations=jdbcOperations;
 	}
 
 	@Override
 	public List<Spittle> findList(long max, int count) {
 		List<Spittle> spittles=new ArrayList<Spittle>();
-		for(int i=0;i<20;i++){
-			Spittle s=new Spittle("我是spittle"+i,Long.valueOf(i));
-			spittles.add(s);
-		}
+		spittles=jdbcOperations.query("select id,message from Spittle where id < ? and id> ? ", new Object[]{max+count,max}, new RowMapper(){
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Spittle spittle=new Spittle(null,null,null,null,null);
+			
+				long id=rs.getLong(1);
+				String message=rs.getString(2);
+				spittle.setId(id);
+				spittle.setMessage(message);
+				
+				return spittle;
+			}});
 		return spittles;
 	}
 
